@@ -1,0 +1,48 @@
+<Function>
+
+    <Name>DecidirConsultaUsuario</Name>
+    
+    <!-- 🚨 REGRAS OBRIGATÓRIAS NO AGENTE -->
+    <Rules>
+        <Rule>Retornar apenas JSON.</Rule>
+        <Rule>Nunca chamar mais de uma tool.</Rule>
+        <Rule>Nunca inventar identificadores.</Rule>
+        <Rule>Encaminhar erro se nenhuma decisão for possível.</Rule>
+    </Rules>
+
+    <!-- DADOS DE ENTRADA -->
+    <Fields>
+        <Field name="email" type="email" prompt="Informe o e-mail do usuário (opcional)." />
+
+        <Field name="user_id" type="string" prompt="Informe o ID do usuário (opcional)." />
+    </Fields>
+
+    <!-- REGRA DE DECISÃO -->
+    <DecisionLogic>
+    Se email estiver preenchido, utilizar consulta por email.
+    Se user_id estiver preenchido, utilizar consulta por id.
+    Nunca tentar consultar sem ao menos um identificador.
+    </DecisionLogic>
+
+    <!-- SAÍDA ESTRUTURADA -->
+    <ResponseTemplate>
+{
+  "decision": {
+    "action": "consultar_usuario",
+    "criteria": "{#if email}email{#else}id{/if}"
+  },
+  "tool": "{#if email}consulta_usuario_por_email{#else}consulta_usuario_por_id{/if}",
+  "input": {
+    "{#if email}query{#else}path{/if}": {
+      "{#if email}email{#else}id{/if}": "{#if email}{email}{#else}{user_id}{/if}"
+    }
+  },
+  "context": {
+    "origin": "agent",
+    "strategy": "decision-routing",
+    "version": "1.0"
+  }
+}
+    </ResponseTemplate>
+
+</Function>

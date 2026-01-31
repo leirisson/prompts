@@ -1,0 +1,258 @@
+DOCUMENTAÇÃO COMPLETA
+CRIAÇÃO DE AGENTES UTILIZANDO PROMPTS EM XML
+===========================================
+
+Este documento descreve, de forma prática e padronizada, como criar agentes utilizando prompts estruturados em XML.
+O foco é ensinar o uso correto das tags, com exemplos reais e aplicáveis.
+
+============================================================
+
+1. O QUE É UM PROMPT EM XML
+--------------------------
+Um prompt em XML é um contrato de comportamento do agente.
+Ele define exatamente como o agente deve se comportar, falar, validar dados e executar ações.
+
+Diferente de prompts em texto livre, o XML traz:
+- Organização
+- Previsibilidade
+- Controle
+- Segurança
+
+============================================================
+
+2. ESTRUTURA BASE DO AGENTE
+--------------------------
+
+Todo agente DEVE seguir esta estrutura:
+
+<Agent>
+  <Description></Description>
+  <Language></Language>
+  <CommunicationStyle></CommunicationStyle>
+  <Validations></Validations>
+  <Rules></Rules>
+  <Functions></Functions>
+</Agent>
+
+============================================================
+
+3. TAG <Agent>
+--------------
+Elemento raiz.
+Tudo que define o agente deve estar dentro desta tag.
+
+EXEMPLO:
+<Agent>
+  ...conteúdo do agente...
+</Agent>
+
+============================================================
+
+4. TAG <Description>
+-------------------
+Define quem é o agente e qual é sua função principal.
+
+BOAS PRÁTICAS:
+- Seja específico
+- Defina o canal
+- Limite o escopo
+
+EXEMPLO:
+<Description>
+Agente de suporte técnico para sistema SaaS,
+responsável por abertura de chamados via chat.
+</Description>
+
+============================================================
+
+5. TAG <Language>
+----------------
+Define idioma e tom de comunicação.
+
+EXEMPLOS:
+<Language>
+Português Brasileiro, informal e humanizado
+</Language>
+
+<Language>
+Português Brasileiro, formal e objetivo
+</Language>
+
+============================================================
+
+6. TAG <CommunicationStyle>
+--------------------------
+Define o comportamento do agente durante a conversa.
+
+SUBTAGS:
+- <Style>
+- <Guide>
+
+EXEMPLO:
+<CommunicationStyle>
+  <Style>Informal</Style>
+  <Guide>
+    Não mencionar validações internas.
+    Seja claro e direto.
+  </Guide>
+</CommunicationStyle>
+
+============================================================
+
+7. TAG <Validations>
+-------------------
+Define como o agente deve analisar as informações antes de agir.
+
+EXEMPLOS:
+<Validations>
+Considere todo o histórico da conversa.
+</Validations>
+
+<Validations>
+Nunca execute funções com dados incompletos.
+</Validations>
+
+============================================================
+
+8. TAG <Rules>
+--------------
+Define regras que NÃO podem ser quebradas.
+
+USO:
+- Segurança
+- Conformidade
+- Limitação do agente
+
+EXEMPLO:
+<Rules>
+  <Rule>Não inventar informações.</Rule>
+  <Rule>Não confirmar existência de usuários.</Rule>
+  <Rule>Encaminhar para atendimento humano se necessário.</Rule>
+</Rules>
+
+============================================================
+
+9. TAG <Functions>
+-----------------
+Define tudo que o agente é capaz de fazer.
+
+Cada função representa uma ação específica.
+
+============================================================
+
+10. ESTRUTURA DE UMA FUNÇÃO
+--------------------------
+
+<Function>
+  <Name></Name>
+  <Fields></Fields>
+  <ResponseTemplate></ResponseTemplate>
+</Function>
+
+============================================================
+
+11. TAG <Fields> E <Field>
+-------------------------
+Define os dados obrigatórios para executar uma função.
+
+ATRIBUTOS DO FIELD:
+- name: identificador interno
+- type: tipo do dado
+- prompt: pergunta ao usuário
+- validation: regra de validação
+
+EXEMPLO:
+<Field
+  name="email"
+  type="email"
+  prompt="Informe seu e-mail"
+  validation="formato válido"
+/>
+
+============================================================
+
+12. TAG <ResponseTemplate>
+-------------------------
+Define a resposta final do agente após a execução da função.
+
+EXEMPLO:
+<ResponseTemplate>
+Chamado aberto com sucesso para o e-mail {email}.
+</ResponseTemplate>
+
+============================================================
+
+13. EXEMPLO PRÁTICO COMPLETO DE AGENTE
+-------------------------------------
+
+<Agent>
+
+  <Description>
+  Agente de suporte técnico para sistema SaaS,
+  responsável por abertura de chamados.
+  </Description>
+
+  <Language>
+  Português Brasileiro, informal
+  </Language>
+
+  <CommunicationStyle>
+    <Style>Informal</Style>
+    <Guide>
+      Nunca mencionar validações internas.
+    </Guide>
+  </CommunicationStyle>
+
+  <Validations>
+  Considere todo o histórico da conversa.
+  </Validations>
+
+  <Rules>
+    <Rule>Não inventar informações.</Rule>
+    <Rule>Não prometer prazos.</Rule>
+  </Rules>
+
+  <Functions>
+
+    <Function>
+      <Name>AberturaChamado</Name>
+
+      <Fields>
+        <Field name="email" type="email" prompt="Qual seu e-mail?" />
+        <Field name="descricao" type="string" prompt="Descreva o problema." />
+      </Fields>
+
+      <ResponseTemplate>
+Chamado aberto com sucesso. Nossa equipe irá analisar.
+      </ResponseTemplate>
+
+    </Function>
+
+  </Functions>
+
+</Agent>
+
+============================================================
+
+14. BOAS PRÁTICAS
+----------------
+- Um agente deve ter um papel claro
+- Uma função deve executar apenas uma ação
+- Nunca executar ações sem todos os campos
+- Regras devem proteger o usuário e o sistema
+- XML deve ser organizado e legível
+
+============================================================
+
+15. CHECKLIST FINAL
+------------------
+[ ] Description clara
+[ ] Language definido
+[ ] CommunicationStyle configurado
+[ ] Rules bem definidas
+[ ] Functions com campos obrigatórios
+[ ] ResponseTemplate claro
+
+============================================================
+
+FIM DA DOCUMENTAÇÃO

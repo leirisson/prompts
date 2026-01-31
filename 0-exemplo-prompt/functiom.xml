@@ -1,0 +1,24 @@
+<Agent>
+    <Function>
+
+        <Name>ConsultarUsuarioPorEmail</Name>
+
+        <!-- DADOS NECESSÁRIOS -->
+        <Fields>
+            <Field name="email" type="email" prompt="Informe o e-mail para consulta." validation="formato válido" />
+        </Fields>
+
+        <!-- SAÍDA PARA TOOL -->
+        <ResponseTemplate>
+{
+  "tool": "consulta_usuario",
+  "input": {
+    "query": {
+      "email": "{email}"
+    }
+  }
+}
+        </ResponseTemplate>
+
+    </Function>
+</Agent>
